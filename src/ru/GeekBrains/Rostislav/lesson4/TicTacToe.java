@@ -1,11 +1,15 @@
 package ru.GeekBrains.Rostislav.lesson4;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
 
 public class TicTacToe {
-    private static final int SIZE = 5; // размер поля SIZExSIZE
-    private static final int SIZE_OF_WIN = 4; // победа при SIZE_OF_WIN символов в ряд
+    private static final int SIZE = 3; // размер поля SIZExSIZE
+    private static final int SIZE_OF_WIN = 3; // победа при SIZE_OF_WIN символов в ряд
     private static final char[][] map = new char[SIZE][SIZE];
     private static final char[][] partOfmap = new char[SIZE_OF_WIN][SIZE_OF_WIN];
 
@@ -17,8 +21,36 @@ public class TicTacToe {
     private static final char DOT_O = 'O';
     public static final Scanner SCANNER = new Scanner(System.in);
 
+
+    static public class MyWindow extends JFrame {
+        public MyWindow() {
+            setBounds(500,500,400,400);
+            setTitle("TicTacToe");
+            setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            JButton[][] jbs = new JButton[SIZE][SIZE];
+            setLayout(new GridLayout(SIZE, SIZE));
+            for (int i = 0; i < SIZE; i++)
+            {
+                for (int j = 0; j < SIZE; j++) {
+                    jbs[i][i] = new JButton(/*String.valueOf(DOT_EMPTY)*/);
+                    jbs[i][j].addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            ((JButton)e.getSource()).setText("X");
+                        }
+                    });
+                    add(jbs[i][j]);
+                }
+
+            }
+            setVisible(true);
+        }
+    }
+
+
     public static void main(String[] args) {
     initializeGame();
+    MyWindow window = new MyWindow();
     printMap();
 
         while (true) {
@@ -47,7 +79,17 @@ public class TicTacToe {
     private static void humanTurn() {
         int rowIndex = -1;
         int colIndex = -1;
-        do {
+
+        /*for (int i = 0; i < 5; i++) {
+                //jbs[i] = new JButton("#" + i);
+                jbs[i].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        System.out.println(((JButton) e.getSource()).getText() + "was pressed.");
+                    }
+                });
+            }*/
+        /*do {
             System.out.print("Введите номер строки: ");
             if(!SCANNER.hasNextInt()) {
                 SCANNER.nextLine();
@@ -63,8 +105,9 @@ public class TicTacToe {
                 continue;
             }
             colIndex = SCANNER.nextInt() - 1;
-        } while (!isCellValid(rowIndex, colIndex, DOT_X));
+        } while (!isCellValid(rowIndex, colIndex, DOT_X));*/
 
+        //map[0][0] = (jbs[0].)
         map[rowIndex][colIndex] = DOT_X;
 
         numberOfHumanTurn++;
@@ -99,6 +142,7 @@ public class TicTacToe {
     }
 
     private static void printMap() {
+        //MyWindow window = new MyWindow();
         printHeader();
         printMapState();
         System.out.println();
